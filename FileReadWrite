@@ -1,0 +1,141 @@
+package billing;
+
+import java.util.ArrayList;
+import javax.swing.JOptionPane;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+
+public class BillingForm extends javax.swing.JFrame {
+
+    /*
+     * Declare ArrayList and variables
+     */
+    ArrayList<Customer> cList;
+    String name, address, email;
+    int meterPoint;
+
+    /**
+     * Create new form BillingForm
+     */
+    public BillingForm() {
+        initComponents();
+        cList = new ArrayList<>();
+    }
+
+    And then later....                   
+
+    private void btnAddActionPerformed(java.awt.event.ActionEvent evt) {                                       
+
+        // Create a new instance of a customer 
+        Customer c = new Customer();
+
+        // Step 1. Collect the user input from the JFrame
+        name = txtName.getText();
+        address = txtAddress.getText();
+        email = txtEMail.getText();
+        meterPoint = Integer.parseInt(txtMeterPoint.getText()); //parse from String to int
+
+        // Step 2. Populate customer object and add to the ArrayList of customers
+        c.setName(name);
+        c.setAddress(address);
+        c.setEmail(email);
+        c.setMeterPoint(meterPoint);
+        cList.add(c);
+
+        // Optionally give the user some feedback by displaying the customer details
+        JOptionPane.showMessageDialog(this, "Customer Added");
+
+        // Optionally clear the data input by user by setting each JTextField text to an empty string e.g. ""
+        txtName.setText("");
+        txtAddress.setText("");
+        txtEMail.setText("");
+        txtMeterPoint.setText("");
+    }                                      
+
+    private void btnDisplayActionPerformed(java.awt.event.ActionEvent evt) {                                           
+
+        // Iterate over each Customer added the ArrayList and display its contents  
+        for (Customer x : cList) {
+            // Show the customer details to the user
+            JOptionPane.showMessageDialog(this, "Added:\nName:" + x.getName() + "\n Address:" + x.getAddress() + " \n EMail:" + x.getEmail() + " \n Meter Point:" + x.getMeterPoint());
+        }
+    }                                          
+
+    private void btnSearchActionPerformed(java.awt.event.ActionEvent evt) {                                          
+
+        // Get the Meter Point value entered by the user to find
+        int searchMeterPoint = Integer.parseInt(txtMeterPoint.getText());
+
+        // Iterate over each Customer added the ArrayList customers to find the correct Meter Point 
+        for (Customer x : cList) {
+            // Check to see if the information entered by the user (searchMeterPoint) matches
+            // the Meter Point found in the customer instance (meterPoint) at position indicated by the index in the for loop
+            if (x.getMeterPoint() == searchMeterPoint) {
+                JOptionPane.showMessageDialog(this, "Found:\nName:" + x.getName() + "\n Address:" + x.getAddress() + " \n EMail:" + x.getEmail() + " \n Meter Point:" + x.getMeterPoint());
+            }
+        }
+    }                                         
+
+    private void btnDeleteActionPerformed(java.awt.event.ActionEvent evt) {                                          
+
+        // Get the Meter Point value entered by the user
+        int searchMeterPoint = Integer.parseInt(txtMeterPoint.getText());
+        
+        // Iterate over each Customer added the ArrayList customers to find the correct Meter Point 
+        for (int i = 0; i < cList.size(); i++) {
+            // Check if "searchMeterPoint" entered by user matches "meterPoint" found in customer in index i
+            if (cList.get(i).getMeterPoint() == searchMeterPoint) {
+                JOptionPane.showMessageDialog(this, "Found:\nName:" + cList.get(i).getName() + "\n Address:" + cList.get(i).getAddress() + " \n EMail:" + cList.get(i).getEmail() + " \n Meter Point:" + cList.get(i).getMeterPoint());
+                cList.remove(i);
+            }
+        }
+        // Optionally clear the data input by user by setting Meter Point JTextField text to an empty string e.g. ""
+        txtMeterPoint.setText("");
+    }                                         
+
+    private void btnSaveActionPerformed(java.awt.event.ActionEvent evt) {                                        
+        File outFile;
+        FileOutputStream fStream;
+        ObjectOutputStream oStream;
+        try {
+            outFile = new File("Output.txt");
+            fStream = new FileOutputStream(outFile);
+            oStream = new ObjectOutputStream(fStream);
+
+            oStream.writeObject(cList);
+            oStream.close();
+
+            // Optionally tell the user that the customers have been written to the file
+            JOptionPane.showMessageDialog(this, "Customers saved to file");
+        
+        } catch (IOException e) {
+            JOptionPane.showMessageDialog(this, "IO Error saving customers: " + e.getMessage());
+        }
+    }                                       
+
+    private void btnLoadActionPerformed(java.awt.event.ActionEvent evt) {                                        
+        File inFile;
+        FileInputStream fStream;
+        ObjectInputStream oStream;
+        try {
+
+            inFile = new File("Output.txt");
+            fStream = new FileInputStream(inFile);
+            oStream = new ObjectInputStream(fStream);
+
+            cList = (ArrayList<Customer>) oStream.readObject();
+            oStream.close();
+
+            // Optionally tell the user that the customers have been loaded / read from the file
+            JOptionPane.showMessageDialog(this, "Customers loaded from file");
+
+        } catch (IOException e) {
+            JOptionPane.showMessageDialog(this, "IO Error loading customers: " + e.getMessage());
+        } catch (ClassNotFoundException ex) {
+            JOptionPane.showMessageDialog(this, "Class Not Found Exception: " + ex.getMessage());
+        }
+    }                                
