@@ -1,0 +1,31 @@
+public class 2DAverage{
+	// declare instance variables
+	private double[][] rain;
+	private double average;
+
+	public Rainfall(){
+
+	}
+
+	public void setRain(double[][] r){
+		this.rain = r;
+	}
+
+	public double getAverage(){
+		return average;
+	}
+
+	public void computeAvg(){
+		double sum = 0;
+		int counter = 0;
+
+		// traverse 2D array
+		for(int row = 0; row < rain.length; row++){
+			for(int col = 0; col < rain[row].length; col++){
+				sum = sum + rain[row][col];
+				counter += 1;
+			}
+		}
+		average = sum/counter;
+	}
+}
