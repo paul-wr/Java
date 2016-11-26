@@ -1,0 +1,29 @@
+import java.util.Scanner;
+
+public class RainfallApp{
+	public static void main(String[] args){
+		Scanner in = new Scanner(System.in);
+		Rainfall rf = new Rainfall();
+
+		// declare a 2D array
+		double[][] myArray;
+
+		int weeks = 1;
+		int days = 7;
+
+		myArray = new double[weeks][days];
+
+		for(int row = 0; row < myArray.length; row++){
+			for(int col = 0; col < myArray[row].length; col++){
+				System.out.println("Enter value:");
+				myArray[row][col] = in.nextDouble();
+
+			}
+		}
+		rf.setRain(myArray);
+		rf.computeAvg();
+
+		System.out.println("The Average = "+rf.getAverage());
+
+	}
+}
