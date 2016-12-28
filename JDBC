@@ -1,0 +1,27 @@
+import java.sql.*;
+public class Driver {
+
+	public static void main(String[] args) {
+		
+		try{
+			// 1. get a connection to a database
+			Connection myConn = DriverManager.getConnection("jdbc:mysql://localhost:3306/musicshop?useSSL=false", "root", "password");
+			
+			// 2. Create a statement
+			Statement myStmt = myConn.createStatement();
+			
+			// 3. Execute SQL Query
+			ResultSet myRs = myStmt.executeQuery("SELECT * FROM instruments");
+			
+			// 4. Process the result set
+			while(myRs.next()){
+				System.out.println(myRs.getString("inst_id") + " , " +myRs.getString("inst_name") +" , "+myRs.getString("inst_year") + " , " +myRs.getString("inst_price"));
+			}
+		}
+		catch(Exception exc){
+			exc.printStackTrace();
+		}
+
+	}
+
+}
