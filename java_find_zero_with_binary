@@ -1,5 +1,5 @@
 public class BinaryTest {
-    static int mid, realTotal, actualTotal, positionFoundAt, low;
+    static int mid, expectedTotal, actualTotal, positionFoundAt, low;
     public static void main(String[] args) {
         int[] array = {1,2,3,4,5,6,7,8,9,10,11,12,13,14,0,16,17};
         int high = array.length - 1;
@@ -9,11 +9,11 @@ public class BinaryTest {
 
         while(low <= high){
             mid = (low + high) / 2;
-            realTotal = 0;
+            expectedTotal = 0;
             actualTotal = 0;
 
             for(int i = 0; i <= mid; i++){
-                realTotal += (i + 1);
+                expectedTotal += (i + 1);
                 actualTotal += array[i];
             }
 
@@ -22,16 +22,16 @@ public class BinaryTest {
                 break;
             }
 
-            else if(actualTotal < realTotal){
+            else if(actualTotal < expectedTotal){
                 high = mid - 1;
             }
 
-            else if(actualTotal == realTotal){
+            else if(actualTotal == expectedTotal){
                low = mid + 1;
             }
         }
         System.out.println("Mid found at position: " + positionFoundAt);
-        System.out.println("Total: " + realTotal);
+        System.out.println("Total: " + expectedTotal);
         System.out.println("Subtotal: " + actualTotal);
     }
 }
